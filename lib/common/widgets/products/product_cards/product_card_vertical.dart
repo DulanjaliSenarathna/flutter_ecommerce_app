@@ -4,6 +4,7 @@ import 'package:t_store/common/styles/shadows.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:t_store/common/widgets/icons/circular_icon.dart';
 import 'package:t_store/common/widgets/images/rounded_image.dart';
+import 'package:t_store/common/widgets/texts/brand_title_text_with_verified_icon.dart';
 import 'package:t_store/common/widgets/texts/product_price_text.dart';
 import 'package:t_store/common/widgets/texts/product_title_text.dart';
 import 'package:t_store/utils/constants/colors.dart';
@@ -62,25 +63,27 @@ class ProductCardVertical extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwItems/2,),
             
             //Details
-              Padding(padding:  const EdgeInsets.only(left: TSizes.sm),
+              const Padding(padding:  EdgeInsets.only(left: TSizes.sm),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const ProductTitleText(title: 'Green Hike Air Shoes', smallSize: true,),
-                    const SizedBox(height: TSizes.spaceBtwItems/2,),
-                    Row(
-                      children: [
-                        Text('Nike', overflow: TextOverflow.ellipsis,maxLines: 1, style: Theme.of(context).textTheme.labelMedium,),
-                        const SizedBox(width: TSizes.xs,),
-                        const Icon(Iconsax.verify5, color: TColors.primary, size: TSizes.iconXs,)
-                      ],
-                    ),
+                    ProductTitleText(title: 'Green Hike Air Shoes', smallSize: true,),
+                    SizedBox(height: TSizes.spaceBtwItems/2,),
+                    BrandTitleTextWithVerifiedIcon(title: 'Nike')
+                  ],
+                ),
+            ),
+                  const Spacer(),
+
+                    //Price row
                     
                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //Price
-                        const ProductPriceText(price: '35.5',),
+                        const Padding(
+                          padding: EdgeInsets.only(left: TSizes.sm),
+                          child: ProductPriceText(price: '35.5',)),
 
                         //Add to cart button
                         Container(
@@ -98,15 +101,10 @@ class ProductCardVertical extends StatelessWidget {
                         )
                       ],
                     )
-                  ],
-                ),
-            ),
-     
           ],
         ),
       ),
    );
   }
 }
-
 

@@ -17,7 +17,7 @@ class TLoginHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image(
-          height: 60,
+          height: 150,
           image: AssetImage(dark ? TImages.lightAppLogo:TImages.darkAppLogo) ,
         ),
         Text(TTexts.loginTitle, style: Theme.of(context).textTheme.headlineMedium,),
