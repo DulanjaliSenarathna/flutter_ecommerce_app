@@ -5,7 +5,12 @@ import 'package:t_store/utils/helpers/helper_functions.dart';
 
 class CircularImage extends StatelessWidget {
   const CircularImage({
-    super.key, this.fit=BoxFit.cover, required this.image, required this.isNetworkImage, this.overlayColor, this.backgroundColor, this.width=56, this.height=56, this.padding=TSizes.sm,
+    super.key, 
+    this.fit=BoxFit.cover, 
+    required this.image,  
+    this.isNetworkImage=false, 
+    this.overlayColor, 
+    this.backgroundColor, this.width=56, this.height=56, this.padding=TSizes.sm,
   });
 
   final BoxFit? fit;
