@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/utils/constants/sizes.dart';
-import 'package:t_store/utils/theme/widget_themes/text_field_theme.dart';
 
 class AddNewAddressScreen extends StatelessWidget {
   const AddNewAddressScreen({super.key});
@@ -73,6 +72,6 @@ class AddNewAddressScreen extends StatelessWidget {
           ),
           ),
       ),
-    );
+      );
   }
 }
