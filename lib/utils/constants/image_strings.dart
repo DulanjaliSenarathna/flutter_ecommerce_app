@@ -117,8 +117,7 @@ class TImages {
       "assets/images/animations/sammy-line-workout.gif";
 
 
-  static const String successfullyRegisterAnimation =
-      "assets/images/animations/72462-check-register.json";
+  static const String successfullyRegisterAnimation = "assets/images/animations/72462-check-register.json";
 
 
   static const String productsSaleIllustration =

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/common/styles/spacing_styles.dart';
+import 'package:t_store/common/widgets/loaders/animation_loader.dart';
+import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/constants/text_strings.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
@@ -19,9 +21,9 @@ class SuccessScreen extends StatelessWidget {
           child: Column(
             children: [
               //Image
-              Image(
-                image: AssetImage(image),
-                width: THelperFunctions.screenWidth() * 0.6,
+              const AnimationLoaderWidget(
+                animation: TImages.successfullyRegisterAnimation,
+                text: '',
               ),
               const SizedBox(
                 height: TSizes.spaceBtwSections,
