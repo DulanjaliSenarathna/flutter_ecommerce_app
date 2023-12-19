@@ -58,4 +58,5 @@ class UserModel {
       'ProfilePicture': profilePicture
     };
   }
+
 }

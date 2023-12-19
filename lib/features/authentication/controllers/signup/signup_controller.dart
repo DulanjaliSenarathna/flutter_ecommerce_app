@@ -30,7 +30,7 @@ class SignupController extends GetxController {
     try {
       //Start loading
       FullScreenLoader.openLoadingDialog(
-          'We are processing your information...', TImages.spin);
+          'We are processing your information...', TImages.docerAnimation);
 
       //Check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -85,7 +85,7 @@ class SignupController extends GetxController {
           message: 'Your account has been created! Verify email to continue');
 
       // Move to verify email screen
-      Get.to(() => const VerifyEmailScreen());
+      Get.to(() => VerifyEmailScreen(email: email.text.trim(),));
 
     } catch (e) {
       //Remove loader
