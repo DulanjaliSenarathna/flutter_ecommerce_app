@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               //logo, title and subtitle
-              TLoginHeader(dark: dark),
+              const TLoginHeader(),
 
               //Form
               const TLoginForm(),
