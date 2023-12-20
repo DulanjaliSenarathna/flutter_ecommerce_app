@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:t_store/data/repositories/user/user_repository.dart';
 import 'package:t_store/features/personalization/models/user_model.dart';
 import 'package:t_store/utils/popups/loaders.dart';
