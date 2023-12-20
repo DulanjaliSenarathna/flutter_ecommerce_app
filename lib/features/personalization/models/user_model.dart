@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:t_store/utils/formatters/formatter.dart';
 
 class UserModel {

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:t_store/data/repositories/authentication/authentication_repository.dart';
+import 'package:t_store/features/personalization/controllers/user_controller.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/helpers/network_manager.dart';
 import 'package:t_store/utils/popups/full_screen_loader.dart';
@@ -15,6 +16,7 @@ class LoginController extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final userController = Get.put(UserController());
 
   @override
   void onInit() {
@@ -22,8 +24,8 @@ class LoginController extends GetxController {
     password.text = localStorage.read('REMEMBER_ME_PASSWORD');
     super.onInit();
   }
-  
-   //Email and password sign in
+
+  //Email and password sign in
   Future<void> emailAndPasswordSignIn() async {
     try {
       //Start loading
@@ -59,6 +61,39 @@ class LoginController extends GetxController {
       //Redirect
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
+      FullScreenLoader.stopLoading();
+      Loaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  // Google sign in
+  Future<void> googleSignIn() async {
+    try {
+      // Start loading
+      FullScreenLoader.openLoadingDialog(
+          'Logging you in...', TImages.docerAnimation);
+
+      // Check internet connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        FullScreenLoader.stopLoading();
+        return;
+      }
+
+      //Google Authentication
+      final userCredentials =
+          await AuthenticationRepository.instance.signInWithGoogle();
+
+      // Save User Record
+      await userController.saveUserRecord(userCredentials);
+
+      // Remove the loader
+      FullScreenLoader.stopLoading();
+
+      //Redirect
+      AuthenticationRepository.instance.screenRedirect();
+    } catch (e) {
+      // Remove the loader
       FullScreenLoader.stopLoading();
       Loaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
