@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/images/circular_image.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
+import 'package:t_store/features/personalization/controllers/user_controller.dart';
+import 'package:t_store/features/personalization/screens/profile/widgets/change_name.dart';
 import 'package:t_store/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
@@ -11,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = UserController.instance;
     return  Scaffold(
       appBar: const TAppBar(
         showBackArrow: true,
@@ -43,8 +48,8 @@ class ProfileScreen extends StatelessWidget {
             const TSectionHeading(title: 'Profile Information', showActionButton: false,),
             const SizedBox(height: TSizes.spaceBtwItems),
 
-            ProfileMenu(onPressed: () {  }, title: 'Name', value: 'Dulanjali Senarathna',),
-            ProfileMenu(onPressed: () {  }, title: 'Username', value: 'dulanjali993',),
+            ProfileMenu(onPressed: () => Get.to(()=> const ChangeName()), title: 'Name', value: controller.user.value.fullName,),
+            ProfileMenu(onPressed: () {  }, title: 'Username', value: controller.user.value.username,),
             const SizedBox(height: TSizes.spaceBtwItems),
             const Divider(),
             const SizedBox(height: TSizes.spaceBtwItems),
@@ -53,16 +58,16 @@ class ProfileScreen extends StatelessWidget {
             const TSectionHeading(title: 'Personal Information', showActionButton: false,),
             const SizedBox(height: TSizes.spaceBtwItems),
 
-            ProfileMenu(onPressed: () {  }, title: 'User ID', value: '45689',),
-            ProfileMenu(onPressed: () {  }, title: 'E-mail', value: 'dulanjali@gmail.com',),
-            ProfileMenu(onPressed: () {  }, title: 'Phone Number', value: '0713725452',),
+            ProfileMenu(onPressed: () {  }, title: 'User ID', value: controller.user.value.id,),
+            ProfileMenu(onPressed: () {  }, title: 'E-mail', value: controller.user.value.email),
+            ProfileMenu(onPressed: () {  }, title: 'Phone Number', value: controller.user.value.phoneNumber),
             ProfileMenu(onPressed: () {  }, title: 'Gender', value: 'Female',),
             ProfileMenu(onPressed: () {  }, title: 'Date of Birth', value: '29 Sep 1994',),
             const Divider(),
             const SizedBox(height: TSizes.spaceBtwItems),
 
             Center(
-              child: TextButton(onPressed: (){}, 
+              child: TextButton(onPressed: ()=> controller.deleteAccountWarningPopup(), 
               child: const Text('Close Account', style: TextStyle(color: Colors.red),)),
             )
          
