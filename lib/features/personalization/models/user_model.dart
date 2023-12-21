@@ -66,7 +66,7 @@ class UserModel {
       final data = document.data()!;
       return UserModel(
           id: document.id,
-          username: data['Username']??'',
+          username: data['UserName']??'',
           email: data['Email']??'',
           firstName: data['FirstName'] ?? '',
           lastName: data['LastName'] ?? '',

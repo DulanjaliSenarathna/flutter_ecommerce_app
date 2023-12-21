@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
@@ -9,6 +10,7 @@ import 'package:t_store/features/personalization/screens/profile/widgets/change_
 import 'package:t_store/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
+import 'package:t_store/utils/popups/shimmer.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -16,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
-    return  Scaffold(
+    return Scaffold(
       appBar: const TAppBar(
         showBackArrow: true,
         title: Text('Profile'),
@@ -26,56 +28,103 @@ class ProfileScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
-          children: [
-            //Profile Picture
-            SizedBox(
-              width: double.infinity,
-              child: Column(
-                children: [
-              const CircularImage(image: TImages.user, width: 80, height: 80,),
-              TextButton(onPressed: (){}, child: const Text('Change Profile Picture'))
-                 
-                ],
+            children: [
+              //Profile Picture
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Obx(() {
+                      final networkImage = controller.user.value.profilePicture;
+                      final image =
+                          networkImage.isNotEmpty ? networkImage : TImages.user;
+                      
+                      return controller.imageUploading.value? const ShimmerEffect(width: 80, height: 80, radius: 80,)
+                        :CircularImage(
+                        image: image,
+                        width: 80,
+                        height: 80,
+                        isNetworkImage: networkImage.isNotEmpty,
+                      );
+                    }),
+                    TextButton(
+                        onPressed: () => controller.uploadUserProfilePicture(),
+                        child: const Text('Change Profile Picture'))
+                  ],
+                ),
               ),
-            ),
 
-            //Details
-            const SizedBox(height: TSizes.spaceBtwItems/2),
-            const Divider(),
-            const SizedBox(height: TSizes.spaceBtwItems),
+              //Details
+              const SizedBox(height: TSizes.spaceBtwItems / 2),
+              const Divider(),
+              const SizedBox(height: TSizes.spaceBtwItems),
 
-            //Heading profile info
-            const TSectionHeading(title: 'Profile Information', showActionButton: false,),
-            const SizedBox(height: TSizes.spaceBtwItems),
+              //Heading profile info
+              const TSectionHeading(
+                title: 'Profile Information',
+                showActionButton: false,
+              ),
+              const SizedBox(height: TSizes.spaceBtwItems),
 
-            ProfileMenu(onPressed: () => Get.to(()=> const ChangeName()), title: 'Name', value: controller.user.value.fullName,),
-            ProfileMenu(onPressed: () {  }, title: 'Username', value: controller.user.value.username,),
-            const SizedBox(height: TSizes.spaceBtwItems),
-            const Divider(),
-            const SizedBox(height: TSizes.spaceBtwItems),
+              ProfileMenu(
+                onPressed: () => Get.to(() => const ChangeName()),
+                title: 'Name',
+                value: controller.user.value.fullName,
+              ),
+              ProfileMenu(
+                onPressed: () {},
+                title: 'User Name',
+                value: controller.user.value.username,
+              ),
+              const SizedBox(height: TSizes.spaceBtwItems),
+              const Divider(),
+              const SizedBox(height: TSizes.spaceBtwItems),
 
-            //Heading personal info
-            const TSectionHeading(title: 'Personal Information', showActionButton: false,),
-            const SizedBox(height: TSizes.spaceBtwItems),
+              //Heading personal info
+              const TSectionHeading(
+                title: 'Personal Information',
+                showActionButton: false,
+              ),
+              const SizedBox(height: TSizes.spaceBtwItems),
 
-            ProfileMenu(onPressed: () {  }, title: 'User ID', value: controller.user.value.id,),
-            ProfileMenu(onPressed: () {  }, title: 'E-mail', value: controller.user.value.email),
-            ProfileMenu(onPressed: () {  }, title: 'Phone Number', value: controller.user.value.phoneNumber),
-            ProfileMenu(onPressed: () {  }, title: 'Gender', value: 'Female',),
-            ProfileMenu(onPressed: () {  }, title: 'Date of Birth', value: '29 Sep 1994',),
-            const Divider(),
-            const SizedBox(height: TSizes.spaceBtwItems),
+              ProfileMenu(
+                onPressed: () {},
+                title: 'User ID',
+                value: controller.user.value.id,
+              ),
+              ProfileMenu(
+                  onPressed: () {},
+                  title: 'E-mail',
+                  value: controller.user.value.email),
+              ProfileMenu(
+                  onPressed: () {},
+                  title: 'Phone Number',
+                  value: controller.user.value.phoneNumber),
+              ProfileMenu(
+                onPressed: () {},
+                title: 'Gender',
+                value: 'Female',
+              ),
+              ProfileMenu(
+                onPressed: () {},
+                title: 'Date of Birth',
+                value: '29 Sep 1994',
+              ),
+              const Divider(),
+              const SizedBox(height: TSizes.spaceBtwItems),
 
-            Center(
-              child: TextButton(onPressed: ()=> controller.deleteAccountWarningPopup(), 
-              child: const Text('Close Account', style: TextStyle(color: Colors.red),)),
-            )
-         
-          ],
-        ),
+              Center(
+                child: TextButton(
+                    onPressed: () => controller.deleteAccountWarningPopup(),
+                    child: const Text(
+                      'Close Account',
+                      style: TextStyle(color: Colors.red),
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
