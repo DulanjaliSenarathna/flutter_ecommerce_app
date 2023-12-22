@@ -10,7 +10,7 @@ import 'package:t_store/features/personalization/screens/profile/widgets/change_
 import 'package:t_store/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/constants/sizes.dart';
-import 'package:t_store/utils/popups/shimmer.dart';
+import 'package:t_store/common/widgets/shimmers/shimmer.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

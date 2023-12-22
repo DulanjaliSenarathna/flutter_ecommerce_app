@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
-import 'package:t_store/utils/popups/shimmer.dart';
+import 'package:t_store/common/widgets/shimmers/shimmer.dart';
 
 class CircularImage extends StatelessWidget {
   const CircularImage({
