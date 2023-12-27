@@ -4,7 +4,9 @@ import 'package:t_store/common/widgets/custom_shapes/containers/primary_header_c
 import 'package:t_store/common/widgets/custom_shapes/containers/search_container.dart';
 import 'package:t_store/common/widgets/layout/grid_layout.dart';
 import 'package:t_store/common/widgets/products/product_cards/product_card_vertical.dart';
+import 'package:t_store/common/widgets/shimmers/vertical_product_shimmer.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
+import 'package:t_store/features/shop/controllers/product_controller.dart';
 import 'package:t_store/features/shop/screens/all_products/all_products.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_appbar.dart';
 import 'package:t_store/features/shop/screens/home/widgets/home_categories.dart';
@@ -17,7 +19,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    final controller = Get.put(ProductController());
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -58,7 +61,9 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: TSizes.spaceBtwItems,)
+                SizedBox(
+                  height: TSizes.spaceBtwItems,
+                )
               ],
             )),
 
@@ -67,22 +72,44 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(TSizes.defaultSpace),
                 child: Column(
                   children: [
-
                     //Promo slider
                     const PromoSlider(),
                     const SizedBox(
-                  height: TSizes.spaceBtwSections,
-                ),
+                      height: TSizes.spaceBtwSections,
+                    ),
 
-                //Heading
-                TSectionHeading(title: 'Popular Products', onPressed: ()=>Get.to(()=>const AllProducts()),),
-                const SizedBox(
-                  height: TSizes.spaceBtwItems,
-                ),
+                    //Heading
+                    TSectionHeading(
+                      title: 'Popular Products',
+                      onPressed: () => Get.to(() => const AllProducts()),
+                    ),
+                    const SizedBox(
+                      height: TSizes.spaceBtwItems,
+                    ),
 
-                //Popular products
-                GridLayout(itemCount: 2, itemBuilder:(_,index)=>const ProductCardVertical()),
-                  
+                    //Popular products
+                    Obx(
+                      () {
+                        if (controller.isLoading.value) {
+                          return const VerticalProductShimmer();
+                        }
+                        if (controller.featuredProducts.isEmpty) {
+                          return Center(
+                                child: Text(
+                                  'No data found!',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      ,
+                                ),
+                              );
+                        }
+                        return GridLayout(
+                            itemCount: controller.featuredProducts.length,
+                            itemBuilder: (_, index) =>
+                                 ProductCardVertical(product:controller.featuredProducts[index]));
+                      },
+                    ),
                   ],
                 ))
           ],

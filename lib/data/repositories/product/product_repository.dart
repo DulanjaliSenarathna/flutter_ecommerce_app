@@ -1,0 +1,89 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:t_store/data/services/cloud_storage/firebase_storage_service.dart';
+import 'package:t_store/features/shop/models/product_model.dart';
+import 'package:t_store/utils/exceptions/firebase_exceptions.dart';
+import 'package:t_store/utils/exceptions/platform_exceptions.dart';
+
+// Repository for managing prouct-related data and operations
+class ProductRepository extends GetxController {
+  static ProductRepository get instance => Get.find();
+
+  // Firestore instance for database interactions
+  final _db = FirebaseFirestore.instance;
+
+  // Get limited featured products
+  Future<List<ProductModel>> getFeaturedProducts() async {
+    try {
+      final snapshot = await _db
+          .collection('Products')
+          .where('IsFeatured', isEqualTo: true)
+          .limit(4)
+          .get();
+      return snapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      throw 'Something went wrong. Please try again bbbbbbbbbbbbbbbbbbbbbbbbbbR';
+    }
+  }
+
+  // Upload dummy data to the cloud firebase
+  Future<void> uploadDummyData(List<ProductModel> produts) async {
+    try {
+      // Upload all the produts along with their images
+      final storage = Get.put(FirebaseStorageService());
+
+      // Loop through each produt
+      for (var product in produts) {
+        // Get imageData link from the local assets
+        final thumbnail =
+            await storage.getImageDataFromAssets(product.thumbnail);
+
+        // Upload image and get its url
+        final url = await storage.uploadImageData(
+            'Products/Images', thumbnail, product.thumbnail.toString());
+
+        // Assign URL to product.thumbnail attribute
+        product.thumbnail = url;
+
+        // Product list of images
+        if (product.images != null && product.images!.isNotEmpty) {
+          List<String> imagesUrl = [];
+          for (var image in product.images!) {
+            // Get imageData link from the local assets
+            final assetImage = await storage.getImageDataFromAssets(image);
+
+            // Upload image and get its url
+            final url = await storage.uploadImageData(
+                'Products/Images', assetImage, image);
+
+            // Assign URL to product.thumbnail attribute
+            imagesUrl.add(url);
+          }
+
+          product.images!.clear();
+          product.images!.addAll(imagesUrl);
+        }
+
+        // Upload variation images
+
+        // Store product in firebase
+        await _db.collection("Products").doc(product.id).set(product.toJson());
+      }
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+}
