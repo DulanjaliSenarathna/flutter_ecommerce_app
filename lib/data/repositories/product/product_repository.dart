@@ -31,7 +31,7 @@ class ProductRepository extends GetxController {
       if (kDebugMode) {
         print(e);
       }
-      throw 'Something went wrong. Please try again bbbbbbbbbbbbbbbbbbbbbbbbbbR';
+      throw 'Something went wrong. Please try again';
     }
   }
 

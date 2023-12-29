@@ -10,6 +10,7 @@ import 'package:t_store/features/shop/screens/product_details/widgets/product_de
 import 'package:t_store/features/shop/screens/product_details/widgets/product_meta_data.dart';
 import 'package:t_store/features/shop/screens/product_details/widgets/rating_share_widget.dart';
 import 'package:t_store/features/shop/screens/product_reviews/product_reviews.dart';
+import 'package:t_store/utils/constants/enums.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
 
@@ -27,7 +28,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: Column(
           children: [
             //Product Image slider
-            const ProductImageSlider(),
+            ProductImageSlider(product: product,),
 
             //Product Details
             Padding(padding: const EdgeInsets.only(right: TSizes.defaultSpace, left: TSizes.defaultSpace, bottom: TSizes.defaultSpace),
@@ -37,11 +38,11 @@ class ProductDetailScreen extends StatelessWidget {
                 const RatingAndShare(),
 
                 //Price , title, stock and brand
-                const ProductMetaData(),
+                 ProductMetaData(product: product),
 
                 //Attributes
-                const ProductAttributes(),
-                const SizedBox(height: TSizes.spaceBtwSections,),
+                if(product.productType == ProductType.variable.toString())  ProductAttributes(product: product),
+                if(product.productType == ProductType.variable.toString()) const SizedBox(height: TSizes.spaceBtwSections,),
 
                 //Checkout Button
                 SizedBox(width: double.infinity,child: ElevatedButton(onPressed: (){}, child: const Text('Checkout'))),
@@ -50,14 +51,14 @@ class ProductDetailScreen extends StatelessWidget {
                 //Description
                 const TSectionHeading(title: 'Description', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
-                const ReadMoreText(
-                  'Landing in a Dark Marina Blue colourway, this standard-fit tee features a classic crew neckline, short sleeves and ribbed detailing to the collar.Made from smooth cotton for a durable wear, this tee is signed off with signature Nike Swoosh branding to the chest in white. ',
+                 ReadMoreText(
+                  product.description ??'',
                   trimLines: 2,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'See more',
                   trimExpandedText: 'See less',
-                  moreStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
-                  lessStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
+                  moreStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
+                  lessStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.w800),
                 ),
 
                 //Reviews

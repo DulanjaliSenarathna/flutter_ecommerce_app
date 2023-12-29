@@ -32,7 +32,7 @@ class ProductController extends GetxController {
       Loaders.errorSnackBar(
           title: 'Ohhhhhhhhhhhh Snap!', message: e.toString());
       if (kDebugMode) {
-        print('$e mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+        print('$e');
       }
     } finally {
       isLoading.value = false;
