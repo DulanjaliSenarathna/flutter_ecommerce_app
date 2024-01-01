@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/primary_header_container.dart';
@@ -81,7 +82,10 @@ class HomeScreen extends StatelessWidget {
                     //Heading
                     TSectionHeading(
                       title: 'Popular Products',
-                      onPressed: () => Get.to(() => const AllProducts()),
+                      onPressed: () => Get.to(() =>  AllProducts(
+                        title: 'Popular Products',
+                        futureMethod:controller.fetchAllFeaturedProducts() ,
+                        )),
                     ),
                     const SizedBox(
                       height: TSizes.spaceBtwItems,
