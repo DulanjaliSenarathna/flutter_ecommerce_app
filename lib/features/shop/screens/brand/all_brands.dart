@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/brands/brand_card.dart';
 import 'package:t_store/common/widgets/layout/grid_layout.dart';
+import 'package:t_store/common/widgets/shimmers/brands_shimmer.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
+import 'package:t_store/features/shop/controllers/brand_controller.dart';
 import 'package:t_store/features/shop/screens/brand/brand_products.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 
@@ -12,25 +14,61 @@ class AllBrandsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar:  const TAppBar(title: Text('Popular Products'),showBackArrow: true,),
+    final brandController = BrandController.instance;
+    return Scaffold(
+      appBar: const TAppBar(
+        title: Text('Popular Products'),
+        showBackArrow: true,
+      ),
       body: SingleChildScrollView(
-        child: Padding(padding:  const EdgeInsets.all(TSizes.defaultSpace),
-        child: Column(
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.all(TSizes.defaultSpace),
+          child: Column(
+            children: [
+              //Heading
+              const TSectionHeading(
+                title: 'Brands',
+                showActionButton: false,
+              ),
+              const SizedBox(
+                height: TSizes.spaceBtwItems,
+              ),
 
-            //Heading
-            const TSectionHeading(title: 'Brands', showActionButton: false,),
-            const SizedBox(height: TSizes.spaceBtwItems,),
+              //Brands
+             Obx(() {
+                            if (brandController.isLoading.value) {
+                              return const BrandsShimmer();
+                            }
 
-            //Brands
-            GridLayout(itemCount: 5, mainAxisExtent: 80, 
-            itemBuilder: (context,index)=> BrandCard(showBorder: true, onTap: ()=>Get.to(()=>const BrandProducts()),))
-          ],
-        ),
+                            if (brandController.allBrands.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No Data Found',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .apply(color: Colors.white),
+                                ),
+                              );
+                            }
+                            return GridLayout(
+                                itemCount:
+                                    brandController.allBrands.length,
+                                mainAxisExtent: 80,
+                                itemBuilder: (_, index) {
+                                  final brand =
+                                      brandController.allBrands[index];
+                                  return BrandCard(
+                                    brand: brand,
+                                    showBorder: false,
+                                    onTap: ()=>Get.to(()=>BrandProducts(brand: brand)),
+                                  );
+                                });
+                          })
+            ],
+          ),
         ),
       ),
-  
     );
   }
 }

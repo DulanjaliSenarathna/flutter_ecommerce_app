@@ -31,11 +31,11 @@ class AllProductsController extends GetxController {
       case 'Name':
         products.sort((a, b) => a.title.compareTo(b.title));
         break;
-      case 'Higher Price':
-        products.sort((a, b) => a.price.compareTo(b.price));
-        break;
       case 'Lower Price':
         products.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case 'Higher Price':
+        products.sort((a, b) => b.price.compareTo(a.price));
         break;
       case 'Newest':
         products.sort((a, b) => a.date!.compareTo(b.date!));

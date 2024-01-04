@@ -6,9 +6,12 @@ import 'package:t_store/common/widgets/custom_shapes/containers/search_container
 import 'package:t_store/common/widgets/layout/grid_layout.dart';
 import 'package:t_store/common/widgets/products/cart/cart_menu_icon.dart';
 import 'package:t_store/common/widgets/brands/brand_card.dart';
+import 'package:t_store/common/widgets/shimmers/brands_shimmer.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
+import 'package:t_store/features/shop/controllers/brand_controller.dart';
 import 'package:t_store/features/shop/controllers/category_controller.dart';
 import 'package:t_store/features/shop/screens/brand/all_brands.dart';
+import 'package:t_store/features/shop/screens/brand/brand_products.dart';
 import 'package:t_store/features/shop/screens/store/widgets/category_tab.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
@@ -19,6 +22,7 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brandController = Get.put(BrandController());
     final categories = CategoryController.instance.featuredCategories;
     return DefaultTabController(
       length: categories.length,
@@ -72,23 +76,51 @@ class StoreScreen extends StatelessWidget {
                           ),
 
                           // Brands Grid
-                          GridLayout(
-                              itemCount: 4,
-                              mainAxisExtent: 80,
-                              itemBuilder: (_, index) {
-                                return const BrandCard(
-                                  showBorder: false,
-                                );
-                              })
+                          Obx(() {
+                            if (brandController.isLoading.value) {
+                              return const BrandsShimmer();
+                            }
+
+                            if (brandController.featuredBrands.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  'No Data Found',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .apply(color: Colors.white),
+                                ),
+                              );
+                            }
+                            return GridLayout(
+                                itemCount:
+                                    brandController.featuredBrands.length,
+                                mainAxisExtent: 80,
+                                itemBuilder: (_, index) {
+                                  final brand =
+                                      brandController.featuredBrands[index];
+                                  return BrandCard(
+                                    brand: brand,
+                                    showBorder: false,
+                                    onTap: ()=>Get.to(()=>BrandProducts(brand: brand)),
+                                  );
+                                });
+                          })
                         ],
                       ),
                     ),
 
                     //Tabs
-                    bottom:  TTabBar(tabs: categories.map((category) => Tab(child: Text(category.name))).toList()))
+                    bottom: TTabBar(
+                        tabs: categories
+                            .map((category) => Tab(child: Text(category.name)))
+                            .toList()))
               ];
             },
-            body: TabBarView(children: categories.map((category) => CategoryTab(category: category)).toList())),
+            body: TabBarView(
+                children: categories
+                    .map((category) => CategoryTab(category: category))
+                    .toList())),
       ),
     );
   }

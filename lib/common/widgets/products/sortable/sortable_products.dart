@@ -28,8 +28,8 @@ class SortableProducts extends StatelessWidget {
             value: controller.selecteSortOption.value,
             items: [
               'Name',
-              'Higher Price',
               'Lower Price',
+              'Higher Price',
               'Sale',
               'Newest',
               'Popularity'
