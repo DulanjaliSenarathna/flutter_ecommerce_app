@@ -84,7 +84,7 @@ class StoreScreen extends StatelessWidget {
                             if (brandController.featuredBrands.isEmpty) {
                               return Center(
                                 child: Text(
-                                  'No Data Found',
+                                  'No Dataaa Found',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!

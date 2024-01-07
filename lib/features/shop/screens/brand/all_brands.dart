@@ -43,7 +43,7 @@ class AllBrandsScreen extends StatelessWidget {
                             if (brandController.allBrands.isEmpty) {
                               return Center(
                                 child: Text(
-                                  'No Data Found',
+                                  'No Dataaa Found',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
