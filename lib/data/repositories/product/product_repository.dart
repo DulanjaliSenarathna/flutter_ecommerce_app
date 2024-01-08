@@ -55,7 +55,7 @@ class ProductRepository extends GetxController {
     }
   }
 
-  // Get products based on brand
+  // Get products based on query
   Future<List<ProductModel>> fetchProductsByQuery(Query query) async {
     try {
       final querySnapshot = await query.get();
@@ -63,6 +63,28 @@ class ProductRepository extends GetxController {
           .map((doc) => ProductModel.fromQuerySnapshot(doc))
           .toList();
       return productList;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<List<ProductModel>> getFavouriteProducts(
+      List<String> productIds) async {
+    try {
+      final snapshot = await _db
+          .collection('Products')
+          .where(FieldPath.documentId, whereIn: productIds)
+          .get();
+      return snapshot.docs
+          .map((querySnapshot) => ProductModel.fromSnapshot(querySnapshot))
+          .toList();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on PlatformException catch (e) {
@@ -131,7 +153,7 @@ class ProductRepository extends GetxController {
       List<ProductModel> products = productsQuery.docs
           .map((doc) => ProductModel.fromSnapshot(doc))
           .toList();
-          
+
       return products;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;

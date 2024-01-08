@@ -13,6 +13,7 @@ import 'package:t_store/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:t_store/utils/exceptions/firebase_exceptions.dart';
 import 'package:t_store/utils/exceptions/format_exceptions.dart';
 import 'package:t_store/utils/exceptions/platform_exceptions.dart';
+import 'package:t_store/utils/local_storage/storage_utility.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -35,9 +36,16 @@ class AuthenticationRepository extends GetxController {
   screenRedirect() async {
     final user = _auth.currentUser;
     if (user != null) {
+      // If the user is logged in
       if (user.emailVerified) {
+        //Initialize user specific storage
+        await TLocalStorage.init(user.uid);
+
+        //If the user's email is verified, navigate to the main navigation menu
         Get.offAll(() => const NavigationMenu());
       } else {
+
+        //If the user's email is not verified, navigate to the VerifyEmail screen
         Get.offAll(() => VerifyEmailScreen(
               email: _auth.currentUser?.email,
             ));
@@ -45,6 +53,8 @@ class AuthenticationRepository extends GetxController {
     } else {
       //Local storage
       deviceStorage.writeIfNull('isFirstTime', true);
+
+      //Check if it's the 1st time launching the app
       deviceStorage.read('isFirstTime') != true
           ? Get.offAll(() =>
               const LoginScreen()) // Redirect to Login screen if not the first time
@@ -200,7 +210,7 @@ class AuthenticationRepository extends GetxController {
     try {
       await UserRepository.instance.removeUserRecord(_auth.currentUser!.uid);
       await _auth.currentUser?.delete();
-    }on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;

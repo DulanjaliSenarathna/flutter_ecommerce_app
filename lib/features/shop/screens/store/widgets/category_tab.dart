@@ -6,7 +6,6 @@ import 'package:t_store/common/widgets/shimmers/vertical_product_shimmer.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
 import 'package:t_store/features/shop/controllers/category_controller.dart';
 import 'package:t_store/features/shop/models/category_model.dart';
-import 'package:t_store/features/shop/models/product_model.dart';
 import 'package:t_store/features/shop/screens/all_products/all_products.dart';
 import 'package:t_store/features/shop/screens/store/widgets/category_brands.dart';
 import 'package:t_store/utils/constants/sizes.dart';

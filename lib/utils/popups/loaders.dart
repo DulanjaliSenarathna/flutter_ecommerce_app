@@ -10,13 +10,16 @@ class Loaders {
 
   static customToast({required message}) {
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+      backgroundColor: Colors.transparent,
         elevation: 0,
         duration: const Duration(seconds: 3),
         content: Container(
+          
           padding: const EdgeInsets.all(12.0),
           margin: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
+
               color: THelperFunctions.isDarkMode(Get.context!)
                   ? TColors.darkGrey.withOpacity(0.9)
                   : TColors.grey.withOpacity(0.9)),
