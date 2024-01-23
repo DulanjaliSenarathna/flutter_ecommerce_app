@@ -23,7 +23,7 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return   Scaffold(
-      bottomNavigationBar: const BottomAddToCart(),
+      bottomNavigationBar:  BottomAddToCart(product:product),
       body: SingleChildScrollView(
         child: Column(
           children: [
