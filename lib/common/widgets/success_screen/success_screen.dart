@@ -20,8 +20,8 @@ class SuccessScreen extends StatelessWidget {
           child: Column(
             children: [
               //Image
-              const AnimationLoaderWidget(
-                animation: TImages.successfullyRegisterAnimation,
+             AnimationLoaderWidget(
+                animation: image,
                 text: '',
               ),
               const SizedBox(

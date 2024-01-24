@@ -120,6 +120,9 @@ class TImages {
   static const String cartAnimation =
       "assets/images/animations/lady-adding-product-in-cart-animation.json";
 
+  static const String orderCompletion=
+      "assets/images/animations/order-complete-car-delivery-animation.json";
+
 
   static const String productsIllustration =
 
